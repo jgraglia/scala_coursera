@@ -149,47 +149,47 @@ class NonEmpty(elem: Tweet, left: TweetSet, right: TweetSet) extends TweetSet {
   }
   
   override def mostRetweeted: Tweet = {
-    def mostOrNull(set:TweetSet):Tweet = {
-      try  {set.mostRetweeted} catch {case  e:java.util.NoSuchElementException =>  null}
+    def mostOrNull(set:TweetSet):Option[Tweet] = {
+      try  {new Some[Tweet](set.mostRetweeted)} catch {case  e:java.util.NoSuchElementException =>  None}
     }
-    def max(a:Tweet, b:Tweet):Tweet = {
-      if (a == null ) b
-      else if (b == null) a
-      else if (a.retweets>b.retweets)a
+    def max(a:Option[Tweet], b:Option[Tweet]):Option[Tweet] = {
+      if (a.isEmpty) b
+      else if (b.isEmpty) a
+      else if (a.get.retweets>b.get.retweets)a
       else b
     }
-    max(elem, max(mostOrNull(left), mostOrNull(right)))
+    max(new Some[Tweet](elem), max(mostOrNull(left), mostOrNull(right))).get
   }
   
   override def lessRetweeted: Tweet = {
-    def lessOrNull(set:TweetSet):Tweet = {
-      try  {set.lessRetweeted} catch {case  e:java.util.NoSuchElementException =>  null}
+    def lessOrNull(set:TweetSet):Option[Tweet] = {
+      try  {new Some[Tweet](set.lessRetweeted)} catch {case  e:java.util.NoSuchElementException =>  None}
     }
-    def min(a:Tweet, b:Tweet):Tweet = {
-      if (a == null ) b
-      else if (b == null) a
-      else if (a.retweets<b.retweets)a
+    def min(a:Option[Tweet], b:Option[Tweet]):Option[Tweet] = {
+      if (a.isEmpty ) b
+      else if (b.isEmpty) a
+      else if (a.get.retweets<b.get.retweets)a
       else b
     }
-    min(elem, min(lessOrNull(left), lessOrNull(right)))
+    min(new Some[Tweet](elem), min(lessOrNull(left), lessOrNull(right))).get
   }
   
   def descendingByRetweet: TweetList = {
-     def mostOrNull(set:TweetSet):Tweet = {
-      try  {set.mostRetweeted} catch {case  e:java.util.NoSuchElementException =>  null}
+//     def mostOrNull(set:TweetSet):Tweet = {
+//      try  {set.mostRetweeted} catch {case  e:java.util.NoSuchElementException =>  null}
+//    }
+    def lessOrNull(set:TweetSet):Option[Tweet] = {
+      try  {new Some[Tweet](set.lessRetweeted)} catch {case  e:java.util.NoSuchElementException =>  None}
     }
-    def lessOrNull(set:TweetSet):Tweet = {
-      try  {set.lessRetweeted} catch {case  e:java.util.NoSuchElementException =>  null}
-    }
-    def ascendingTraverse(target:TweetSet, acc:TweetList): TweetList ={
-    	val most = mostOrNull(target)
-    	if (most == null) acc
-    	else ascendingTraverse(target remove(most),  new Cons(most, acc));
-    }
+//    def ascendingTraverse(target:TweetSet, acc:TweetList): TweetList ={
+//    	val most = mostOrNull(target)
+//    	if (most == null) acc
+//    	else ascendingTraverse(target remove(most),  new Cons(most, acc));
+//    }
     def descendingTraverse(target:TweetSet, acc:TweetList): TweetList ={
     	val most = lessOrNull(target)
-    	if (most == null) acc
-    	else descendingTraverse(target remove(most),  new Cons(most, acc));
+    	if (most.isEmpty) acc
+    	else descendingTraverse(target remove(most.get),  new Cons(most.get, acc));
     }
     descendingTraverse(this, Nil)
   }
