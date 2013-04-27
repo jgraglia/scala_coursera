@@ -68,6 +68,58 @@ class TweetSetSuite extends FunSuite {
       assert(size(b.filter(tw => tw.retweets == 20)) === 2)
     }
   }    
+  
+ test("filter: right branch") {
+    new TestSets {
+      val e = new Empty
+      val b = e.incl(new Tweet("a", "AA", 20)).incl(new Tweet("b", "BB", 20))
+      val data = b.incl(new Tweet("aa", "AAa", 20)).incl(new Tweet("bb", "BBb", 20))
+        .incl(new Tweet("aaa", "AAaa", 322)).incl(new Tweet("bbb", "BBbb", 321))
+      println(data)
+      assert(size(data.filter(tw => tw.retweets == 321)) === 1)
+    }
+  }   
+ test("filter: left branch") {
+    new TestSets {
+      val e = new Empty
+      val data = e
+      	.incl(new Tweet("4a", "4a", 4))
+      	.incl(new Tweet("5e", "5e", 5))
+      	.incl(new Tweet("5B", "5B", 5))
+      	.incl(new Tweet("3b", "3b", 3))
+      	.incl(new Tweet("6a", "6a", 6))
+      	.incl(new Tweet("6b", "6b", 6))
+      	.incl(new Tweet("6", "6", 6))
+      	.incl(new Tweet("1C", "1C", 1))
+      	.incl(new Tweet("4b", "4b", 4))
+      	.incl(new Tweet("3", "3", 3))
+      	.incl(new Tweet("2", "2", 2))
+      	.incl(new Tweet("4d", "4d", 4))
+      	.incl(new Tweet("4c", "4c", 4))
+      	.incl(new Tweet("2a", "2a", 2))
+      	.incl(new Tweet("2b", "2b", 2))
+      	.incl(new Tweet("1", "1", 1))
+      	.incl(new Tweet("1b", "1B", 1))
+      	.incl(new Tweet("3a", "3a", 3))
+      	.incl(new Tweet("ZZ", "ZZ", 900))
+      	.incl(new Tweet("  ", " ", 800))
+
+      println(data)
+      assert(size(data.filter(tw => tw.retweets == 4)) === 4)
+      assert(size(data.filter(tw => tw.retweets >= 4)) === 11)
+      assert(size(data.filter(tw => tw.retweets == 3)) === 3)
+      assert(size(data.filter(tw => tw.retweets <= 0)) === 0)
+      assert(size(data.filter(tw => tw.retweets == 900)) === 1)
+      assert(size(data.filter(tw => tw.retweets == 800)) === 1)
+
+    }
+  }  
+ 
+ test("filter: google dataset") {
+    new TestSets {
+      assert(size(GoogleVsApple.appleTweets.filter(tw => tw.retweets == 321)) ===1)
+    }
+ }
   test("union: set4c and set4d") {
     new TestSets {
       assert(size(set4c.union(set4d)) === 4)
