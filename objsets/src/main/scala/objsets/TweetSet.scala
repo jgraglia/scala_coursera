@@ -40,7 +40,7 @@ abstract class TweetSet {
    * This method takes a predicate and returns a subset of all the elements
    * in the original set for which the predicate is true.
    *
-   * Question: Can we implment this method here, or should it remain abstract
+   * Question: Can we implEment this method here, or should it remain abstract
    * and be implemented in the subclasses?
    */
   def filter(p: Tweet => Boolean): TweetSet = filterAcc(p, new Empty())
@@ -133,7 +133,7 @@ class Empty extends TweetSet {
 
   def foreach(f: Tweet => Unit): Unit = ()
   
-  override def toString: String = "(Empty)"
+  override def toString: String = "Empty"
 }
 
 class NonEmpty(elem: Tweet, left: TweetSet, right: TweetSet) extends TweetSet {
@@ -142,10 +142,14 @@ class NonEmpty(elem: Tweet, left: TweetSet, right: TweetSet) extends TweetSet {
     if (p (elem)) {
       right filterAcc(p, left filterAcc(p, acc incl elem))
     } else right filterAcc(p, left filterAcc(p, acc))    
+//    if (contains(elem) && p (elem))
+//    right union left filterAcc(p, acc incl elem)
+//    else right union left filterAcc(p, acc)
   }
   
   def union(that: TweetSet): TweetSet =  {
-     ((left union right) union that) incl elem
+//     ((left union right) union that) incl elem
+    (left union (right union that)) incl elem
   }
   
   override def mostRetweeted: Tweet = {
@@ -178,6 +182,7 @@ class NonEmpty(elem: Tweet, left: TweetSet, right: TweetSet) extends TweetSet {
 //     def mostOrNull(set:TweetSet):Tweet = {
 //      try  {set.mostRetweeted} catch {case  e:java.util.NoSuchElementException =>  null}
 //    }
+    // I didn't know that I can modify TweeSet to add an isEmpty method! see FAQ https://class.coursera.org/progfun-002/forum/thread?thread_id=778
     def lessOrNull(set:TweetSet):Option[Tweet] = {
       try  {new Some[Tweet](set.lessRetweeted)} catch {case  e:java.util.NoSuchElementException =>  None}
     }
@@ -194,7 +199,7 @@ class NonEmpty(elem: Tweet, left: TweetSet, right: TweetSet) extends TweetSet {
     descendingTraverse(this, Nil)
   }
 
-  override def toString: String =    "("+left+" :: "+elem+" :: "+right+")"
+  override def toString: String =    "("+left+" << "+elem+" >> "+right+")"
   /**
    * The following methods are already implemented
    */
