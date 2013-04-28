@@ -90,7 +90,22 @@ class HuffmanSuite extends FunSuite {
 	  assert(times( List('e','e')) === List(('e',2)))
     }
   }    
-    
+   test("play with list sort") {
+     new TestTrees {
+       val l = List(('t', 2), ('e', 1), ('z', 3),('a', 5),('b', 0))
+       val sorted = l.sortBy(x=>x._2)
+	   assert(sorted === List(('b', 0),('e',1),('t',2),('z',3),('a',5)))
+    }
+  }   
+  test("makeOrderedLeafList empty list") {
+    assert(makeOrderedLeafList(List()) === List())
+  }
+  test("makeOrderedLeafList singleton") {
+    assert(makeOrderedLeafList(List(('t', 2))) === List( Leaf('t',2)))
+  }
+   test("makeOrderedLeafList order") {
+    assert(makeOrderedLeafList(List(('e', 23), ('t', 2))) === List( Leaf('t',2), Leaf('e',23)))
+  }
   test("makeOrderedLeafList for some frequency table") {
     assert(makeOrderedLeafList(List(('t', 2), ('e', 1), ('x', 3))) === List(Leaf('e',1), Leaf('t',2), Leaf('x',3)))
   }

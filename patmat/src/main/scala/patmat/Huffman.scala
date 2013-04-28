@@ -78,7 +78,7 @@ object Huffman {
    *   }
    */
   def times(chars: List[Char]): List[(Char, Int)] = {
-    chars.map(c => (c,chars.count(y=> y == c))).distinct
+    chars.map(c => (c, chars.count(y=> y == c))).distinct
     /*
      def timesAcc(head: Char, remaining : List[Char], acc: List[(Char, Int)]): List[(Char, Int)] = {
       val pair: (Char, Int) = (head, 1)
@@ -98,7 +98,10 @@ object Huffman {
    * head of the list should have the smallest weight), where the weight
    * of a leaf is the frequency of the character.
    */
-  def makeOrderedLeafList(freqs: List[(Char, Int)]): List[Leaf] = ???
+  def makeOrderedLeafList(freqs: List[(Char, Int)]): List[Leaf] = {
+    val sorted = freqs.sortBy(x=>x._2)
+    sorted.map(x=>Leaf(x._1, x._2))
+  }
 
   /**
    * Checks whether the list `trees` contains only one single code tree.
