@@ -172,6 +172,23 @@ class HuffmanSuite extends FunSuite {
     makeCodeTree(makeCodeTree(Leaf('x', 1), Leaf('e', 1)), makeCodeTree( Leaf('y', 1), Leaf('z', 1))))
     assert(result.tail.isEmpty)
   }
+  
+  test("createCodeTree : 2 distinct chars") {
+      val codeTree = createCodeTree(string2Chars("AB"))
+    assert(codeTree === makeCodeTree(Leaf('A', 1), Leaf('B', 1)))
+  }
+   test("createCodeTree : multiple single char") {
+      val codeTree = createCodeTree(string2Chars("AAB"))
+    assert(codeTree === makeCodeTree(Leaf('B', 1), Leaf('A', 2)))
+  }  
+   test("createCodeTree : only 2 diff chars") {
+      val codeTree = createCodeTree(string2Chars("BBAABBBBAA"))
+    assert(codeTree === makeCodeTree(Leaf('A', 4), Leaf('B', 6)))
+  }  
+   test("createCodeTree : 3 diff chars") {
+      val codeTree = createCodeTree(string2Chars("CBBAABBBBAAC"))
+    assert(codeTree === makeCodeTree(Leaf('A', 4), Leaf('B', 6)))
+  }     
   test("decode and encode a very short text should be identity") {
     new TestTrees {
       assert(decode(t1, encode(t1)("ab".toList)) === "ab".toList)
