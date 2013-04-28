@@ -132,7 +132,23 @@ class HuffmanSuite extends FunSuite {
 		  Leaf('t', 2)
 	  )
       assert(singleton(List(sampleTree1)) === true)
-  }     
+  }    
+  test("combine empty codetree leave them untouched") {
+    val leaflist = List()
+    assert(combine(leaflist) === leaflist)
+  } 
+  test("combine 1 codetree leave them untouched") {
+	  val leaflist = List(Leaf('e', 1))
+			  assert(combine(leaflist) === leaflist)
+  } 
+  test("combine 2 codetree leave them untouched") {
+    val leaflist = List(Leaf('e', 1), Leaf('t', 2))
+    assert(combine(leaflist) === leaflist)
+  } 
+  test("combine of some leaf list keep order") {
+    val leaflist = List(Leaf('e', 3), Leaf('t', 4), Leaf('x', 5))
+    assert(combine(leaflist) === List( Leaf('x',5), Fork(Leaf('e',3),Leaf('t',4),List('e', 't'),7)))
+  }
   test("combine of some leaf list") {
     val leaflist = List(Leaf('e', 1), Leaf('t', 2), Leaf('x', 4))
     assert(combine(leaflist) === List(Fork(Leaf('e',1),Leaf('t',2),List('e', 't'),3), Leaf('x',4)))
