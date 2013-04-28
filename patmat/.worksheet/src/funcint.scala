@@ -76,23 +76,18 @@ def show(e:Expr):String = e match{
 val e  =Prod(Sum(Number(1), Number(2)), Number(9));System.out.println("""e  : funcint.Prod = """ + $show(e ));$skip(20); val res$1 = 
 show(e)+"="+eval(e);System.out.println("""res1: String = """ + $show(res$1));$skip(32); val res$2 = 
 show(Sum(Number(1), Number(2)));System.out.println("""res2: String = """ + $show(res$2));$skip(48); val res$3 = 
-show(Sum(Number(1), Sum(Number(2), Number(3))));System.out.println("""res3: String = """ + $show(res$3))}
+show(Sum(Number(1), Sum(Number(2), Number(3))));System.out.println("""res3: String = """ + $show(res$3));$skip(164); 
 
-/*
+
 def insert(x: Int, xs: List[Int]): List[Int] = xs match {
   case List() =>  List(x)
   case y :: ys => {
-    if (ys.isEmpty()) y :: x
-    else y::  insert(x, ys.tail)
-	  /*if (x<y) List(y,  ys.head :: insert(x, ys.tail))
-	  else if (x == y) List(y, x, ys)
-	  else List(ys)
-	  */
+    if (x <= y) x :: xs
+    else y :: insert(x, ys)
   }
-}
-insert(9, Nil)
-var a = 1::2::6::Nil
-insert(4, a)
-println(a.toString())
-*/
+};System.out.println("""insert: (x: Int, xs: List[Int])List[Int]""");$skip(15); val res$4 = 
+insert(9, Nil);System.out.println("""res4: List[Int] = """ + $show(res$4));$skip(21); 
+var a = 1::2::6::Nil;System.out.println("""a  : List[Int] = """ + $show(a ));$skip(13); val res$5 = 
+insert(4, a);System.out.println("""res5: List[Int] = """ + $show(res$5));$skip(33); 
+println(insert(3, a).toString())}
 }
