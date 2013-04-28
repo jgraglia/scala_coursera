@@ -75,12 +75,21 @@ class HuffmanSuite extends FunSuite {
 	  assert(times( List()) === List())
     }
   }
+  test("times : single") {
+     new TestTrees {
+	  assert(times( List('e')) === List(('e',1)))
+    }
+  }  
   test("times : one of each") {
     new TestTrees {
 	  assert(times( List('x','e','t')) === List(('x', 1), ('e', 1), ('t', 1)))
     }
   }
-
+ test("times : same char again") {
+     new TestTrees {
+	  assert(times( List('e','e')) === List(('e',2)))
+    }
+  }    
     
   test("makeOrderedLeafList for some frequency table") {
     assert(makeOrderedLeafList(List(('t', 2), ('e', 1), ('x', 3))) === List(Leaf('e',1), Leaf('t',2), Leaf('x',3)))

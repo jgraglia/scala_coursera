@@ -78,8 +78,17 @@ object Huffman {
    *   }
    */
   def times(chars: List[Char]): List[(Char, Int)] = {
+    chars.map(c => (c,chars.count(y=> y == c))).distinct
+    /*
+     def timesAcc(head: Char, remaining : List[Char], acc: List[(Char, Int)]): List[(Char, Int)] = {
+      val pair: (Char, Int) = (head, 1)
+      if (remaining.isEmpty) pair :: acc
+      else timesAcc(remaining.head, remaining.tail, pair :: acc)
+    }
+
     if (chars.isEmpty) List()
-    else List()
+    else (timesAcc(chars.head, chars.tail, List()))
+    */
   }
 
   /**
