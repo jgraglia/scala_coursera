@@ -22,7 +22,10 @@ object Huffman {
   case class Fork(left: CodeTree, right: CodeTree, chars: List[Char], weight: Int) extends CodeTree
   case class Leaf(char: Char, weight: Int) extends CodeTree
 
-
+ def show(tree: CodeTree): String =  tree match {
+    case Leaf(char, weight) => char+"@"+weight.toString
+    case Fork(l,r,chars,weight) =>   "("+show(l) +"["+chars+"@"+weight.toString+"]"+show(r)+")"
+  }
 
   // Part 1: Basics
 
@@ -120,7 +123,7 @@ object Huffman {
    * unchanged.
    */
   def combine(trees: List[CodeTree]): List[CodeTree] = {
-    if (trees.size <= 2 ) trees
+    if (trees.size < 2 ) trees
     else {
       val fork = makeCodeTree(trees.head, trees.tail.head)
       val newTrees = fork :: trees.tail.tail;
@@ -145,7 +148,10 @@ object Huffman {
    *    the example invocation. Also define the return type of the `until` function.
    *  - try to find sensible parameter names for `xxx`, `yyy` and `zzz`.
    */
-  def until(xxx: ???, yyy: ???)(zzz: ???): ??? = ???
+  def until(done: List[CodeTree]=>Boolean, reduce: List[CodeTree]=>List[CodeTree])(trees: List[CodeTree]): List[CodeTree] =  {
+    if (trees.isEmpty ||  singleton(trees)) trees
+    else until(done, reduce)(reduce(trees))
+  }
 
   /**
    * This function creates a code tree which is optimal to encode the text `chars`.

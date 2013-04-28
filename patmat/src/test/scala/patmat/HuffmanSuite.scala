@@ -141,9 +141,9 @@ class HuffmanSuite extends FunSuite {
 	  val leaflist = List(Leaf('e', 1))
 			  assert(combine(leaflist) === leaflist)
   } 
-  test("combine 2 codetree leave them untouched") {
+  test("combine 2 codetree ") {
     val leaflist = List(Leaf('e', 1), Leaf('t', 2))
-    assert(combine(leaflist) === leaflist)
+    assert(combine(leaflist) === List(Fork(Leaf('e',1),Leaf('t',2),List('e', 't'),3)))
   } 
   test("combine of some leaf list keep order") {
     val leaflist = List(Leaf('e', 3), Leaf('t', 4), Leaf('x', 5))
@@ -153,7 +153,25 @@ class HuffmanSuite extends FunSuite {
     val leaflist = List(Leaf('e', 1), Leaf('t', 2), Leaf('x', 4))
     assert(combine(leaflist) === List(Fork(Leaf('e',1),Leaf('t',2),List('e', 't'),3), Leaf('x',4)))
   }
-
+  test("until : with emptylist") {
+    assert(until(singleton, combine) (List()) === List())
+  }
+  test("until : with singleton") {
+      val sampleTree1 = makeCodeTree(
+		  makeCodeTree(Leaf('x', 1), Leaf('e', 1)),
+		  Leaf('t', 2)
+	  )
+    assert(until(singleton, combine) (List(sampleTree1)) === List(sampleTree1))
+  }
+  test("until : with 2 codetrees") {
+      val sampleTree1 = makeCodeTree(Leaf('x', 1), Leaf('e', 1))
+	  val sampleTree2 = makeCodeTree(Leaf('y', 1), Leaf('z', 1))
+	  val result = until(singleton, combine) (List(sampleTree1, sampleTree2))
+	 println("until ="+ show(result.head))
+    assert(result.head === 
+    makeCodeTree(makeCodeTree(Leaf('x', 1), Leaf('e', 1)), makeCodeTree( Leaf('y', 1), Leaf('z', 1))))
+    assert(result.tail.isEmpty)
+  }
   test("decode and encode a very short text should be identity") {
     new TestTrees {
       assert(decode(t1, encode(t1)("ab".toList)) === "ab".toList)
