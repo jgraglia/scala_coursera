@@ -103,7 +103,7 @@ class HuffmanSuite extends FunSuite {
   test("makeOrderedLeafList singleton") {
     assert(makeOrderedLeafList(List(('t', 2))) === List( Leaf('t',2)))
   }
-   test("makeOrderedLeafList order") {
+  test("makeOrderedLeafList order") {
     assert(makeOrderedLeafList(List(('e', 23), ('t', 2))) === List( Leaf('t',2), Leaf('e',23)))
     assert(makeOrderedLeafList(List(('a', 23), ('z', 2))) === List( Leaf('z',2), Leaf('a',23)))
     assert(makeOrderedLeafList(List(('z', 23), ('a', 2))) === List( Leaf('a',2), Leaf('z',23)))
@@ -112,6 +112,27 @@ class HuffmanSuite extends FunSuite {
     assert(makeOrderedLeafList(List(('t', 2), ('e', 1), ('x', 3))) === List(Leaf('e',1), Leaf('t',2), Leaf('x',3)))
   }
 
+  test("singleton with empty") {
+    assert(singleton(List()) === false)
+  }
+  test("singleton with multiples") {
+      val sampleTree1 = makeCodeTree(
+		  makeCodeTree(Leaf('x', 1), Leaf('e', 1)),
+		  Leaf('t', 2)
+	  )
+	  val sampleTree2 = makeCodeTree(
+		  makeCodeTree(Leaf('y', 1), Leaf('e', 1)),
+		  Leaf('t', 2)
+	  )
+      assert(singleton(sampleTree1 :: sampleTree2 :: Nil) === false)
+  }
+ test("singleton with single") {
+      val sampleTree1 = makeCodeTree(
+		  makeCodeTree(Leaf('x', 1), Leaf('e', 1)),
+		  Leaf('t', 2)
+	  )
+      assert(singleton(List(sampleTree1)) === true)
+  }     
   test("combine of some leaf list") {
     val leaflist = List(Leaf('e', 1), Leaf('t', 2), Leaf('x', 4))
     assert(combine(leaflist) === List(Fork(Leaf('e',1),Leaf('t',2),List('e', 't'),3), Leaf('x',4)))
