@@ -4,6 +4,7 @@ import org.scalatest.FunSuite
 
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
+import common._
 
 import Anagrams._
 
@@ -40,8 +41,8 @@ class AnagramsSuite extends FunSuite {
     assert(wordOccurrences("Robert") === List(('b', 1), ('e', 1), ('o', 1), ('r', 2), ('t', 1)))
   }
 
-// ==============
-   test("sentenceOccurrences: empty") {
+  // ==============
+  test("sentenceOccurrences: empty") {
     assert(sentenceOccurrences(List()) === List())
   }
 
@@ -56,12 +57,18 @@ test("sentenceOccurrences: keep order among words") {
     assert(sentenceOccurrences(List("abcd", "", "e")) === List(('a', 1), ('b', 1), ('c', 1), ('d', 1), ('e', 1)))
   }
 
-
+  // ==============
   test("dictionaryByOccurrences.get: eat") {
     assert(dictionaryByOccurrences.get(List(('a', 1), ('e', 1), ('t', 1))).map(_.toSet) === Some(Set("ate", "eat", "tea")))
   }
+test("dictionaryByOccurrences.get: abbey  multiple occurences") {
+    assert(dictionaryByOccurrences.get(List(('a', 1), ('b', 2), ('e', 1), ('y', 1))).map(_.toSet) === Some(Set("abbey")))
+  }
 
-
+test("dictionaryByOccurrences.get: Aarhus case") {
+    assert(dictionaryByOccurrences.get(List(('a', 2), ('h', 1), ('r', 1), ('s', 1), ('u', 1))).map(_.toSet) === Some(Set("Aarhus")))
+  }
+  // ==============
 
   test("word anagrams: married") {
     assert(wordAnagrams("married").toSet === Set("married", "admirer"))
@@ -72,6 +79,7 @@ test("sentenceOccurrences: keep order among words") {
   }
 
 
+  // ==============
 
   test("subtract: lard - r") {
     val lard = List(('a', 1), ('d', 1), ('l', 1), ('r', 1))
