@@ -10,6 +10,28 @@ import Anagrams._
 @RunWith(classOf[JUnitRunner])
 class AnagramsSuite extends FunSuite {
 
+  test("wordOccurrences: empty") {
+    assert(wordOccurrences("") === List())
+  }
+  
+  test("wordOccurrences: a") {
+    assert(wordOccurrences("a") === List(('a', 1)))
+  }
+  test("wordOccurrences: A") {
+    assert(wordOccurrences("A") === List(('a', 1)))
+  }
+   test("wordOccurrences: aa") {
+    assert(wordOccurrences("aa") === List(('a', 2)))
+  }
+  test("wordOccurrences: ignore case aA") {
+    assert(wordOccurrences("aA") === List(('a', 2)))
+  }
+  test("wordOccurrences: sorted") {
+    assert(wordOccurrences("ba") === List(('a', 1),('b',1)))
+  }
+  test("wordOccurrences: sorted on char only") {
+    assert(wordOccurrences("bab") === List(('a', 1),('b',2)))
+  }
   test("wordOccurrences: abcd") {
     assert(wordOccurrences("abcd") === List(('a', 1), ('b', 1), ('c', 1), ('d', 1)))
   }
