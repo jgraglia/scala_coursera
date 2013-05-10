@@ -9,6 +9,5 @@ object week6 {
 	isPrime(4)                                //> res2: Boolean = false
 	isPrime(7)                                //> res3: Boolean = true
 	isPrime(21)                               //> res4: Boolean = false
-	println (6%5)                             //> 1
-	println (6%2)                             //> 0
+                                           //> 0
 }
