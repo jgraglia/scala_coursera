@@ -78,7 +78,17 @@ test("dictionaryByOccurrences.get: Aarhus case") {
     assert(wordAnagrams("player").toSet === Set("parley", "pearly", "player", "replay"))
   }
 
+  test("word anagrams: unknownnnn") {
+    assert(wordAnagrams("unknownnnn").toSet === Set())
+  }
+  
+  test("word anagrams: empty string") {
+    assert(wordAnagrams("").toSet === Set())
+  }
 
+  test("word anagrams: eat") {
+    assert(wordAnagrams("eat").toSet === Set("ate", "eat", "tea"))
+  }
   // ==============
 
   test("subtract: lard - r") {

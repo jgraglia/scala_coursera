@@ -20,5 +20,8 @@ package object forcomp {
       wordstream.close()
     }
   }
-
+ 
+  def loadDictionary2 = {
+	  List("AB", "BA")
+  }
 }
