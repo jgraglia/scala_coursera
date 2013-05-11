@@ -10,46 +10,50 @@ object Anagrams {
   /** A sentence is a `List` of words. */
   type Sentence = List[Word]
 
-  /** `Occurrences` is a `List` of pairs of characters and positive integers saying
+  /**
+   * `Occurrences` is a `List` of pairs of characters and positive integers saying
    *  how often the character appears.
    *  This list is sorted alphabetically w.r.t. to the character in each pair.
    *  All characters in the occurrence list are lowercase.
-   *  
+   *
    *  Any list of pairs of lowercase characters and their frequency which is not sorted
    *  is **not** an occurrence list.
-   *  
+   *
    *  Note: If the frequency of some character is zero, then that character should not be
    *  in the list.
    */
   type Occurrences = List[(Char, Int)]
 
-  /** The dictionary is simply a sequence of words.
+  /**
+   * The dictionary is simply a sequence of words.
    *  It is predefined and obtained as a sequence using the utility method `loadDictionary`.
    */
   val dictionary: List[Word] = loadDictionary
 
-  /** Converts the word into its character occurence list.
-   *  
+  /**
+   * Converts the word into its character occurence list.
+   *
    *  Note: the uppercase and lowercase version of the character are treated as the
    *  same character, and are represented as a lowercase character in the occurrence list.
-   *  
+   *
    *  ATTENTION:The list should be sorted by the characters in an ascending order
    */
   def wordOccurrences(w: Word): Occurrences = {
-    if ( w.isEmpty() )  List()
-    else {w.toLowerCase() map (x=> (x, w.toLowerCase().count(c=>c==x)))}.toList.distinct.sorted
+    if (w.isEmpty()) List()
+    else { w.toLowerCase() map (x => (x, w.toLowerCase().count(c => c == x))) }.toList.distinct.sorted
   }
 
   /** Converts a sentence into its character occurrence list. */
   def sentenceOccurrences(s: Sentence): Occurrences = {
-    if ( s.size == 0 )  List()
+    if (s.size == 0) List()
     else wordOccurrences(s.flatten mkString "")
   }
 
-  /** The `dictionaryByOccurrences` is a `Map` from different occurrences to a sequence of all
+  /**
+   * The `dictionaryByOccurrences` is a `Map` from different occurrences to a sequence of all
    *  the words that have that occurrence count.
    *  This map serves as an easy way to obtain all the anagrams of a word given its occurrence list.
-   *  
+   *
    *  For example, the word "eat" has the following character occurrence list:
    *
    *     `List(('a', 1), ('e', 1), ('t', 1))`
@@ -62,19 +66,20 @@ object Anagrams {
    *
    */
   lazy val dictionaryByOccurrences: Map[Occurrences, List[Word]] = {
-    loadDictionary groupBy(word => (wordOccurrences(word)))
+    loadDictionary groupBy (word => (wordOccurrences(word)))
   }
 
   /** Returns all the anagrams of a given word. */
   def wordAnagrams(word: Word): List[Word] = {
-	dictionaryByOccurrences.get(wordOccurrences(word)).getOrElse(List())
+    dictionaryByOccurrences.get(wordOccurrences(word)).getOrElse(List())
   }
 
-  /** Returns the list of all subsets of the occurrence list.
+  /**
+   * Returns the list of all subsets of the occurrence list.
    *  This includes the occurrence itself, i.e. `List(('k', 1), ('o', 1))`
    *  is a subset of `List(('k', 1), ('o', 1))`.
    *  It also include the empty subset `List()`.
-   * 
+   *
    *  Example: the subsets of the occurrence list `List(('a', 2), ('b', 2))` are:
    *
    *    List(
@@ -93,35 +98,32 @@ object Anagrams {
    *  in the example above could have been displayed in some other order.
    */
   def combinations(occurrences: Occurrences): List[Occurrences] = {
-    def mergeIntern(a : List[Occurrences], i:(Char, Int), r : List[(Char, Int)]):List[Occurrences] = {
-      if (r.isEmpty) List(i) :: a
-      else mergeIntern(List(i) :: a, r.head, r.tail)
+    def keepNonZero(item:(Char, Int)): Boolean = {
+      item._2>0
     }
-    def merge(a : List[Occurrences], r : List[(Char, Int)]):List[Occurrences] = {
-      if (r.isEmpty) a
-      else mergeIntern(a, r.head, r.tail)
+    def trimAcc(acc:  List[Occurrences], items:Occurrences, rem: List[Occurrences]): List[Occurrences] = {
+      if (rem.isEmpty) items.filter(keepNonZero) :: acc
+      else trimAcc( items.filter(keepNonZero)::acc, rem.head, rem.tail)
     }
-    def accumulate(acc : List[Occurrences], item:(Char, Int), remaining : Occurrences):List[Occurrences] = {
-      if(item == Nil)acc
-      else if (item._2 == 0) acc
-      else {
-        var z = {for {
-          i <- 1 to item._2
-        } yield (item._1, i)}.toList
-        //println(item+"::z : "+z+" with "+acc)
-        if (z.isEmpty) acc
-        else if (remaining.isEmpty) merge(acc, z)
-        else accumulate(merge(acc, z), remaining.head, remaining.tail)
-      }
+    def trim(with0: List[Occurrences]): List[Occurrences] = {
+      if(with0.isEmpty)with0
+      else trimAcc(List(), with0.head, with0.tail)
     }
-    if (occurrences.isEmpty) List(List())
+    if (occurrences.isEmpty) List(occurrences)
     else {
-      accumulate(List(List()),  occurrences.head, occurrences.tail)
+      val byChar = for {
+        i <- 0 to occurrences.head._2
+        rest  <- combinations(occurrences.tail)
+      } yield (occurrences.head._1, i) ::rest
+      //println("byChar=" + byChar)
+      val with0 = (List(List()) ::: byChar.toList)
+      trim(with0).distinct
     }
   }
 
-  /** Subtracts occurrence list `y` from occurrence list `x`.
-   * 
+  /**
+   * Subtracts occurrence list `y` from occurrence list `x`.
+   *
    *  The precondition is that the occurrence list `y` is a subset of
    *  the occurrence list `x` -- any character appearing in `y` must
    *  appear in `x`, and its frequency in `y` must be smaller or equal
@@ -132,8 +134,9 @@ object Anagrams {
    */
   def subtract(x: Occurrences, y: Occurrences): Occurrences = ???
 
-  /** Returns a list of all anagram sentences of the given sentence.
-   *  
+  /**
+   * Returns a list of all anagram sentences of the given sentence.
+   *
    *  An anagram of a sentence is formed by taking the occurrences of all the characters of
    *  all the words in the sentence, and producing all possible combinations of words with those characters,
    *  such that the words have to be from the dictionary.
@@ -144,7 +147,7 @@ object Anagrams {
    *  Also, two sentences with the same words but in a different order are considered two different anagrams.
    *  For example, sentences `List("You", "olive")` and `List("olive", "you")` are different anagrams of
    *  `List("I", "love", "you")`.
-   *  
+   *
    *  Here is a full example of a sentence `List("Yes", "man")` and its anagrams for our dictionary:
    *
    *    List(
@@ -166,7 +169,7 @@ object Anagrams {
    *
    *  The different sentences do not have to be output in the order shown above - any order is fine as long as
    *  all the anagrams are there. Every returned word has to exist in the dictionary.
-   *  
+   *
    *  Note: in case that the words of the sentence are in the dictionary, then the sentence is the anagram of itself,
    *  so it has to be returned in this list.
    *
