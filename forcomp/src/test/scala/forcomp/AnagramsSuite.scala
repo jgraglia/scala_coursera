@@ -91,6 +91,19 @@ test("dictionaryByOccurrences.get: Aarhus case") {
   }
   // ==============
 
+  test("combinations: empty list") {
+    assert(combinations(List()).contains(List()))
+  }
+  test("combinations: always contains list") {
+    assert(combinations(List(('a', 2), ('b', 2))).contains(List()))
+  }
+  test("combinations: single char combination") {
+	   assert(combinations(List(('a', 1))).contains(List(('a', 1))), "single char combination not found")
+    assert(combinations(List(('a', 1))).contains(List()), "missing empty list")
+    assert(combinations(List(('a', 1))).size === 2)
+  }
+  // ==============
+
   test("subtract: lard - r") {
     val lard = List(('a', 1), ('d', 1), ('l', 1), ('r', 1))
     val r = List(('r', 1))
