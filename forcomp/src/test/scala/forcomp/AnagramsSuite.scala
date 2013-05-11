@@ -126,6 +126,8 @@ test("dictionaryByOccurrences.get: Aarhus case") {
       List(('a', 1), ('b', 2)),
       List(('a', 2), ('b', 2))
     )
+    println("Obtained : "+combinations(abba))
+    println("Expected : "+abbacomb)
     assert(combinations(abba).toSet === abbacomb.toSet)
   }  
   // ==============
