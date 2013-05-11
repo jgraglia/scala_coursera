@@ -126,12 +126,22 @@ test("dictionaryByOccurrences.get: Aarhus case") {
       List(('a', 1), ('b', 2)),
       List(('a', 2), ('b', 2))
     )
-    println("Obtained : "+combinations(abba))
-    println("Expected : "+abbacomb)
+   // println("Obtained : "+combinations(abba))
+    //println("Expected : "+abbacomb)
     assert(combinations(abba).toSet === abbacomb.toSet)
   }  
   // ==============
 
+  test("subtract: emptyList  - emptyList") {
+    assert(subtract(List(), List()) === List())
+  }
+  test("subtract: anything  - emptyList") {
+       val lard = List(('a', 1), ('d', 1), ('l', 1), ('r', 1))
+       assert(subtract(lard, List()) === lard)
+  }
+  ignore("subtract: emptyList  - anything") {
+	  // pas possible selon la doc
+  }
   test("subtract: lard - r") {
     val lard = List(('a', 1), ('d', 1), ('l', 1), ('r', 1))
     val r = List(('r', 1))
