@@ -93,30 +93,26 @@ test("dictionaryByOccurrences.get: Aarhus case") {
 
   test("combinations: empty list") {
     assert(combinations(List()).contains(List()))
+    assert(combinations(List()).size === 1)
   }
-  test("combinations: always contains list") {
+  test("combinations: always contains empty list") {
     assert(combinations(List(('a', 2), ('b', 2))).contains(List()))
+    assert(combinations(List(('a', 2), ('b', 2))).size > 1)
   }
   test("combinations: single char combination") {
 	   assert(combinations(List(('a', 1))).contains(List(('a', 1))), "single char combination not found")
     assert(combinations(List(('a', 1))).contains(List()), "missing empty list")
     assert(combinations(List(('a', 1))).size === 2)
   }
-  // ==============
-
-  test("subtract: lard - r") {
-    val lard = List(('a', 1), ('d', 1), ('l', 1), ('r', 1))
-    val r = List(('r', 1))
-    val lad = List(('a', 1), ('d', 1), ('l', 1))
-    assert(subtract(lard, r) === lad)
-  }
-
-
-
+  
   test("combinations: []") {
     assert(combinations(Nil) === List(Nil))
   }
 
+  test("combinations: empty occurrence") {
+    assert(combinations(List(('a', 0), ('b', 0))).contains(List()))
+    assert(combinations(List(('a', 0), ('b', 0))).size === 1)
+  }
   test("combinations: abba") {
     val abba = List(('a', 2), ('b', 2))
     val abbacomb = List(
@@ -131,7 +127,19 @@ test("dictionaryByOccurrences.get: Aarhus case") {
       List(('a', 2), ('b', 2))
     )
     assert(combinations(abba).toSet === abbacomb.toSet)
+  }  
+  // ==============
+
+  test("subtract: lard - r") {
+    val lard = List(('a', 1), ('d', 1), ('l', 1), ('r', 1))
+    val r = List(('r', 1))
+    val lad = List(('a', 1), ('d', 1), ('l', 1))
+    assert(subtract(lard, r) === lad)
   }
+
+
+
+
 
 
 

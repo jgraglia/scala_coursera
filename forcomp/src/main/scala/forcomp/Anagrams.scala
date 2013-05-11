@@ -93,7 +93,27 @@ object Anagrams {
    *  in the example above could have been displayed in some other order.
    */
   def combinations(occurrences: Occurrences): List[Occurrences] = {
-    List(occurrences):::List(List())
+    def merge(a : List[Occurrences], i:(Char, Int), r : List[(Char, Int)]):List[Occurrences] = {
+      if (r.isEmpty) List(i) :: a
+      else merge(List(i) :: a, r.head, r.tail)
+    }
+
+    def accumulate(acc : List[Occurrences], item:(Char, Int), remaining : Occurrences):List[Occurrences] = {
+      if(item == Nil)acc
+      else if (item._2 == 0) acc
+      else {
+        var z = {for {
+          i <- 1 to item._2
+        } yield (item._1, i)}.toList
+        println(item+"::z : "+z+" with "+acc)
+        if(z.isEmpty)acc
+        else merge(acc, z.head, z.tail)
+      }
+    }
+    if (occurrences.isEmpty) List(List())
+    else {
+      accumulate(List(List()),  occurrences.head, occurrences.tail)
+    }
   }
 
   /** Subtracts occurrence list `y` from occurrence list `x`.
