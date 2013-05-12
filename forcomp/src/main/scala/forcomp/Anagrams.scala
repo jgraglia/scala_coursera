@@ -145,7 +145,7 @@ object Anagrams {
     else {
        x.foldLeft(List[(Char, Int)]())((acc,xItem) => removeYFromXItem(xItem) :: acc)
        	.reverse
-       	.filter(p => p._2>0)
+       	.filter(p => p._2 > 0)
     }
   }
 
@@ -190,6 +190,11 @@ object Anagrams {
    *
    *  Note: There is only one anagram of an empty sentence.
    */
-  def sentenceAnagrams(sentence: Sentence): List[Sentence] = ???
+  def sentenceAnagrams(sentence: Sentence): List[Sentence] = {
+    if (sentence.isEmpty) List(List())
+    else {
+      throw new Error("sentencesAnagrams : not implemented")
+    }
+  }
 
 }
