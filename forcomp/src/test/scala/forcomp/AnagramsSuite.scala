@@ -148,8 +148,19 @@ test("dictionaryByOccurrences.get: Aarhus case") {
     val lad = List(('a', 1), ('d', 1), ('l', 1))
     assert(subtract(lard, r) === lad)
   }
-
-
+  
+  test("subtract: lard - rr") {
+    val lard = List(('a', 1), ('d', 1), ('l', 1), ('r', 1))
+    val rr = List(('r', 2))
+    val lad = List(('a', 1), ('d', 1), ('l', 1))
+    assert(subtract(lard, rr) === lad)
+  }
+test("subtract: unknown item : lard - rrxx") {
+    val lard = List(('a', 1), ('d', 1), ('l', 1), ('r', 1))
+    val rrxx = List(('r', 2),('x', 2))
+    val lad = List(('a', 1), ('d', 1), ('l', 1))
+    assert(subtract(lard, rrxx) === lad)
+  }
 
 
 

@@ -98,17 +98,17 @@ object Anagrams {
    *  in the example above could have been displayed in some other order.
    */
   def combinations(occurrences: Occurrences): List[Occurrences] = {
-    def keepNonZero(item:(Char, Int)): Boolean = {
-      item._2>0
-    }
-    def trimAcc(acc:  List[Occurrences], items:Occurrences, rem: List[Occurrences]): List[Occurrences] = {
-      if (rem.isEmpty) items.filter(keepNonZero) :: acc
-      else trimAcc( items.filter(keepNonZero)::acc, rem.head, rem.tail)
-    }
-    def trim(with0: List[Occurrences]): List[Occurrences] = {
-      if(with0.isEmpty)with0
-      else trimAcc(List(), with0.head, with0.tail)
-    }
+	def removeZeroOccurences(with0: List[Occurrences]): List[Occurrences] = {
+			def keepNonZero(item:(Char, Int)): Boolean = {
+				item._2>0
+			}
+			def trimAcc(acc:  List[Occurrences], items:Occurrences, rem: List[Occurrences]): List[Occurrences] = {
+				if (rem.isEmpty) items.filter(keepNonZero) :: acc
+				else trimAcc( items.filter(keepNonZero)::acc, rem.head, rem.tail)
+			}
+			if(with0.isEmpty)with0
+			else trimAcc(List(), with0.head, with0.tail)
+	}
     if (occurrences.isEmpty) List(occurrences)
     else {
       val byChar = for {
@@ -117,7 +117,7 @@ object Anagrams {
       } yield (occurrences.head._1, i) ::rest
       //println("byChar=" + byChar)
       val with0 = (List(List()) ::: byChar.toList)
-      trim(with0).distinct
+      removeZeroOccurences(with0).distinct
     }
   }
 
@@ -133,10 +133,18 @@ object Anagrams {
    *  and has no zero-entries.
    */
   def subtract(x: Occurrences, y: Occurrences): Occurrences = {
-    def removeFrom(x: Occurrences, item:(Char, Int)): List[(Char, Int)] = ???
-    if (y.isEmpty) x
+    def removeYFromXItem(xItem:(Char, Int)): (Char, Int) = {
+      var f = y.filter(c=> c._1==xItem._1)
+      if (f.isEmpty)xItem
+      else {
+        (xItem._1,xItem._2- f.head._2)
+      }
+    }
+    if (y.isEmpty || x.isEmpty) x
     else {
-       y.foldLeft(List[(Char, Int)]())((acc,toRemove) => removeFrom(x, toRemove) ::: acc)
+       x.foldLeft(List[(Char, Int)]())((acc,xItem) => removeYFromXItem(xItem) :: acc)
+       	.reverse
+       	.filter(p => p._2>0)
     }
   }
 
