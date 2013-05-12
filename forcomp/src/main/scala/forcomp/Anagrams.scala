@@ -193,7 +193,17 @@ object Anagrams {
   def sentenceAnagrams(sentence: Sentence): List[Sentence] = {
     if (sentence.isEmpty) List(List())
     else {
-      throw new Error("sentencesAnagrams : not implemented")
+      val occurences = sentenceOccurrences(sentence)
+      val allOccurences:List[Occurrences] = combinations(occurences)
+      allOccurences.foreach(println)
+      val res:List[Sentence] = allOccurences.foldLeft(List[Sentence]())((acc,occ) => {
+    	  val firstWordsOrEmpty:Sentence = dictionaryByOccurrences.get(occ).getOrElse(List())
+          firstWordsOrEmpty :: acc
+      }).distinct
+      println("No Keeping only sentences with occ = "+occurences)
+      res.foreach(println)
+
+      res.filter(s=> sentenceOccurrences(s)== occurences)
     }
   }
 
