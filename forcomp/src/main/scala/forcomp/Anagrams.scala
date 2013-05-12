@@ -135,9 +135,10 @@ object Anagrams {
   def subtract(x: Occurrences, y: Occurrences): Occurrences = {
     def removeYFromXItem(xItem:(Char, Int)): (Char, Int) = {
       var f = y.filter(c=> c._1==xItem._1)
-      if (f.isEmpty)xItem
+      if (f.isEmpty) xItem
+      else if (f.size != 1) throw new Error("substract. found multiples "+xItem._1+" in "+f)
       else {
-        (xItem._1,xItem._2- f.head._2)
+        (xItem._1,xItem._2 - f.head._2)
       }
     }
     if (y.isEmpty || x.isEmpty) x
