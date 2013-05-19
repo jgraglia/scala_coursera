@@ -121,4 +121,16 @@ class BloxorzSuite extends FunSuite {
       assert(solution.length == optsolution.length)
     }
   }
+  
+  test("all neighbors") {
+    new Level1 {
+      assert(startBlock.neighbors.size === 4)
+    }
+  }
+
+  test("legalNeighbors for start position") {
+    new Level1 {
+      assert(startBlock.legalNeighbors.size === 2)
+    }
+  }
 }
