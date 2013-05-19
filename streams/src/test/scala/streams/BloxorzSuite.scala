@@ -40,6 +40,27 @@ class BloxorzSuite extends FunSuite {
     val optsolution = List(Right, Right, Down, Right, Right, Right, Down)
   }
 
+  
+  test("block standing") {
+    new Level1 {
+      val block = Block(Pos(0,0), Pos(0,0))
+      assert(block.isStanding === true)
+	  assert(block.down.isStanding === false)
+	  assert(block.right.isStanding === false)
+	  assert(block.right.right.isStanding === true)
+    }
+  }
+  
+  test("block not standing") {
+    new Level1 {
+      val block = Block(Pos(0,0), Pos(0,1))
+      assert(block.isStanding === false)
+	  assert(block.right.isStanding === true)
+      assert(block.down.isStanding === false)
+	  assert(block.down.right.isStanding === true)
+    }
+  }  
+  
   test("terrain function level 1") {
     new Level1 {
       assert(terrain(Pos(0,0)), "0,0")
