@@ -40,7 +40,7 @@ trait Solver extends GameDef {
         val x = for {
           n <- legalNeighbors
         } yield (n._1, n._2 :: history) 
-        x.toStream
+        x.reverse.toStream
     }
   }
 
