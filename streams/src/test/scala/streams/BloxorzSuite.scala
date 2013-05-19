@@ -133,4 +133,12 @@ class BloxorzSuite extends FunSuite {
       assert(startBlock.legalNeighbors.size === 2)
     }
   }
+  
+  test("neighborsWithHistory with empty history ") {
+    new Level1 {
+      val n = neighborsWithHistory(startBlock, List())
+      // println("n with hist: "+n.take(5).toList)
+      assert(n.size === 2)
+    }
+  }  
 }
