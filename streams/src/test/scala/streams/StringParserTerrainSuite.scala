@@ -47,7 +47,14 @@ class StringParserTerrainSuite extends FunSuite {
       assert(level1(Pos(2,2)) === false)
     }
   }
-  
+    test("ingore - char") {
+    new StringParserChecker   {
+      val level = ""
+      assert(terrainFunction(Vector(Vector('S', 'T'), Vector('o', 'o'), Vector('o', 'o')))(Pos(0,0)) === true)
+      assert(terrainFunction(Vector(Vector('S', '-'), Vector('-', 'o'), Vector('o', 'o')))(Pos(0,1)) === false)
+      assert(terrainFunction(Vector(Vector('S', '-'), Vector('-', 'o'), Vector('o', 'o')))(Pos(1,0)) === false)
+    }
+  }
   test("cell not found") {
     new StringParserChecker   {
       val level = ""
