@@ -152,7 +152,11 @@ trait GameDef {
     /**
      * Returns `true` if the block is entirely inside the terrain.
      */
-    def isLegal: Boolean = ???
+    def isLegal: Boolean = {
+      println(b1+" is legal : "+terrain(b1))
+      println(b2+" is legal : "+terrain(b2))
+      terrain(b1) && terrain(b2)
+    }
 
   }
 }

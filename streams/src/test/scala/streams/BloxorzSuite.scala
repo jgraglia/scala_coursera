@@ -39,7 +39,11 @@ class BloxorzSuite extends FunSuite {
 
     val optsolution = List(Right, Right, Down, Right, Right, Right, Down)
   }
+  trait SingleLine extends SolutionChecker {
+      /* terrain for level 1*/
 
+    val level ="ooo-------".stripMargin
+  }
   
   test("block standing") {
     new Level1 {
@@ -60,7 +64,39 @@ class BloxorzSuite extends FunSuite {
 	  assert(block.down.right.isStanding === true)
     }
   }  
-  
+  test("first cube out of terrain : row") {
+    new SingleLine {
+      assert( Block(Pos(0,0), Pos(0,1)).isLegal === true)
+      assert( Block(Pos(1,0), Pos(1,1)).isLegal === false)
+    }
+  }  
+  test("last cube out of terrain : row") {
+    new SingleLine {
+      assert( Block(Pos(0,0), Pos(1,0)).isLegal === false)
+    }
+  }    
+   test("in terrain") {
+    new SingleLine {
+      assert(terrain(Pos(0,2))===true)
+      assert(terrain(Pos(0,38))===false," should not be in terrain 4 ")
+      assert(terrain(Pos(0,3))===false," should not be in terrain 3")
+    }
+  }  
+  test("first cube out of terrain : col") {
+    new SingleLine {
+      assert(terrain(Pos(0,1)))
+      assert(terrain(Pos(0,2)))
+      assert(terrain(Pos(0,3))===false," should not be in terrain ")
+      assert( Block(Pos(0,1), Pos(0,2)).isLegal === true)
+      assert( Block(Pos(0,2), Pos(0,3)).isLegal === false)
+    }
+  }    
+  test("last cube out of terrain : col") {
+    new Level1 {
+      assert( Block(Pos(3,1), Pos(3,2)).isLegal === true)
+      assert( Block(Pos(3,0), Pos(3,1)).isLegal === false)
+    }
+  }    
   test("terrain function level 1") {
     new Level1 {
       assert(terrain(Pos(0,0)), "0,0")
