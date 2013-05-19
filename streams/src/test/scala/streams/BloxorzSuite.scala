@@ -40,11 +40,11 @@ class BloxorzSuite extends FunSuite {
     val optsolution = List(Right, Right, Down, Right, Right, Right, Down)
   }
   trait SingleLine extends SolutionChecker {
-      /* terrain for level 1*/
-
     val level ="ooo-------".stripMargin
   }
-  
+  trait SingleCell extends SolutionChecker {
+    val level ="-S-------".stripMargin
+  }
   test("block standing") {
     new Level1 {
       val block = Block(Pos(0,0), Pos(0,0))
@@ -137,8 +137,14 @@ class BloxorzSuite extends FunSuite {
   test("neighborsWithHistory with empty history ") {
     new Level1 {
       val n = neighborsWithHistory(startBlock, List())
-      // println("n with hist: "+n.take(5).toList)
       assert(n.size === 2)
     }
   }  
+  test("neighborsWithHistory when no legal move ") {
+    new SingleCell {
+      val n = neighborsWithHistory(startBlock, List())
+      assert(n.size === 1)
+      assert(n(0) === (startBlock, List()))
+    }
+  }   
 }
