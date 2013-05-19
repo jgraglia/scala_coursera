@@ -31,10 +31,11 @@ trait Solver extends GameDef {
    * that are inside the terrain.
    */
   def neighborsWithHistory(b: Block, history: List[Move]): Stream[(Block, List[Move])] = {
-    if (b.legalNeighbors.isEmpty) {
+    val legalNeighbors = b.legalNeighbors
+    if (legalNeighbors.isEmpty) {
     	List((b, history)).toStream
     } else if (history.isEmpty) {
-        b.legalNeighbors.map(tuple => (tuple._1, List(tuple._2))).toStream
+        legalNeighbors.map(tuple => (tuple._1, List(tuple._2))).toStream
     } else {
     	???
     }
